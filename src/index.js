@@ -25,7 +25,7 @@ const map = new mapboxgl.Map({
 
 async function* getStoreListFromAirtable() {
   const records = await new Promise((resolve) => {
-    base("StoreLocator")
+    airtableDatabase("StoreLocator")
       .select({
         view: "Grid view",
       })
