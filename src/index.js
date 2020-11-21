@@ -1,4 +1,3 @@
-require('./airtable.browser');
 
 if (!("remove" in Element.prototype)) {
   Element.prototype.remove = function () {
