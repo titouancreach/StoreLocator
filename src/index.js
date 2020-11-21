@@ -1,4 +1,4 @@
-import Airtable from './airtable.browser';
+import './airtable.browser';
 
 if (!("remove" in Element.prototype)) {
   Element.prototype.remove = function () {
