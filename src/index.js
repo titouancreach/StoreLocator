@@ -1,3 +1,4 @@
+const Airtable = require('airtable');
 
 if (!("remove" in Element.prototype)) {
   Element.prototype.remove = function () {
