@@ -123,6 +123,9 @@ async function getGeoJsonStores() {
       details2.innerHTML = prop.description2;
       details2.classList.add("italic");
 
+      const details3 = listing.appendChild(document.createElement("div"));
+      details3.innerHTML = `<i class="fas fa-link"></i> <a href=${prop.url} target="_blank"> ${prop.url}</a>`
+
       link.addEventListener("click", function (e) {
         for (let feature of data.features) {
           if (this.id === "link-" + feature.properties.id) {
@@ -155,7 +158,6 @@ async function getGeoJsonStores() {
         `<h3>${currentFeature.properties.name}</h3>
           <h4>${currentFeature.properties.description1}</h4>
           <h4 class="italic">${currentFeature.properties.description2}</h4>
-          <i class="fas fa-link"></i> <a href=${currentFeature.properties.url} target="_blank"> ${currentFeature.properties.url} </a>
           `
       )
       .addTo(map);
