@@ -6,6 +6,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.italic {
+    font-style: italic;
+}
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -37,7 +41,7 @@ body {
 h1 {
   font-size: 22px;
   margin: 0;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 20px;
   padding: 20px 2px;
 }
@@ -57,7 +61,7 @@ a:hover {
   min-height: 60px;
   line-height: 60px;
   padding: 0 10px;
-  background-color: #00853e;
+  background: #acc9e2;
   color: #fff;
 }
 
@@ -80,7 +84,7 @@ a:hover {
 
 .listings .item .title {
   display: block;
-  color: #00853e;
+  color: #609bce;
   font-weight: 700;
 }
 
@@ -90,7 +94,7 @@ a:hover {
 
 .listings .item.active .title,
 .listings .item .title:hover {
-  color: #8cc63f;
+  color: #609bce;
 }
 
 .listings .item.active {
@@ -110,6 +114,7 @@ a:hover {
 
 ::-webkit-scrollbar-thumb {
   background: #00853e;
+  background: #acc9e2;
   border-radius: 0;
 }
 
@@ -119,7 +124,9 @@ a:hover {
   height: 56px;
   width: 56px;
   background-image: url("../assets/marker.png");
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(255, 255, 255, 0);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .clearfix {
@@ -155,7 +162,7 @@ a:hover {
 }
 
 .mapboxgl-popup-content h3 {
-  background: #91c949;
+  background: #acc9e2;
   color: #fff;
   margin: 0;
   display: block;

@@ -1,4 +1,5 @@
-const Airtable = require('./airtable.browser');
+require("regenerator-runtime/runtime");
+import Airtable from "airtable";
 
 if (!("remove" in Element.prototype)) {
   Element.prototype.remove = function () {
@@ -18,39 +19,37 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/light-v10",
-  center: [-77.034084142948, 38.909671288923],
-  zoom: 13,
+  center: [2.213749, 46.227638],
+  zoom: 5,
   scrollZoom: true,
 });
 
-async function* getStoreListFromAirtable() {
-  const records = await new Promise((resolve) => {
-    airtableDatabase("StoreLocator")
-      .select({
-        view: "Grid view",
-      })
-      .firstPage(function (err, records) {
-        resolve(records);
-      });
-  });
+async function getStoreListFromAirtable() {
+  const records = await airtableDatabase("StoreLocator")
+    .select({
+      view: "Grid view",
+    })
+    .firstPage();
 
-  for (let store in records) {
-    yield {
-      type: "feature",
+  return records.map((store) => {
+    return {
+      type: "Feature",
       geometry: {
-        type: "point",
-        coordinates: [store.Longitude, store.Latitude],
-        properties: {
-          name: store.Name,
-          description: store.DescriptionHtml,
-        },
+        type: "Point",
+        coordinates: [store.fields.Longitude, store.fields.Latitude],
+      },
+      properties: {
+        name: store.fields.Nom,
+        description1: store.fields.Description1,
+        description2: store.fields.Description2,
       },
     };
-  }
+  });
 }
 
 async function getGeoJsonStores() {
   const features = await getStoreListFromAirtable();
+
   return {
     type: "FeatureCollection",
     features: [...features],
@@ -59,6 +58,8 @@ async function getGeoJsonStores() {
 
 (async function () {
   const stores = await getGeoJsonStores();
+
+  console.log(stores);
 
   stores.features.forEach(function (store, i) {
     store.properties.id = i;
@@ -112,13 +113,14 @@ async function getGeoJsonStores() {
       link.href = "#";
       link.className = "title";
       link.id = "link-" + prop.id;
-      link.innerHTML = prop.address;
+      link.innerHTML = prop.name;
 
       const details = listing.appendChild(document.createElement("div"));
-      details.innerHTML = prop.city;
-      if (prop.phone) {
-        details.innerHTML += " · " + prop.phoneFormatted;
-      }
+      details.innerHTML = prop.description1;
+
+      const details2 = listing.appendChild(document.createElement("div"));
+      details2.innerHTML = prop.description2;
+      details2.classList.add("italic");
 
       link.addEventListener("click", function (e) {
         for (let feature of data.features) {
@@ -149,11 +151,21 @@ async function getGeoJsonStores() {
     const popup = new mapboxgl.Popup({ closeOnClick: false })
       .setLngLat(currentFeature.geometry.coordinates)
       .setHTML(
-        "<h3>Sweetgreen</h3>" +
-          "<h4>" +
-          currentFeature.properties.address +
-          "</h4>"
+        `<h3>${currentFeature.properties.name}</h3>
+          <h4>${currentFeature.properties.description1}</h4>
+          <h4 class="italic">${currentFeature.properties.description2}</h4>`
       )
       .addTo(map);
   }
 })();
+
+document.getElementById("localize").addEventListener("click", () => {
+  navigator.geolocation.getCurrentPosition((position) => {
+    map.flyTo({
+      center: [
+        position.coords.longitude,
+        position.coords.latitude], 
+      zoom: 15,
+    });
+  });
+});
