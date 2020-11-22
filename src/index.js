@@ -60,8 +60,6 @@ async function getGeoJsonStores() {
 (async function () {
   const stores = await getGeoJsonStores();
 
-  console.log(stores);
-
   stores.features.forEach(function (store, i) {
     store.properties.id = i;
   });
