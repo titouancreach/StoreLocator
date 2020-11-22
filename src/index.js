@@ -42,6 +42,7 @@ async function getStoreListFromAirtable() {
         name: store.fields.Nom,
         description1: store.fields.Description1,
         description2: store.fields.Description2,
+        url: store.fields.Url,
       },
     };
   });
@@ -153,7 +154,9 @@ async function getGeoJsonStores() {
       .setHTML(
         `<h3>${currentFeature.properties.name}</h3>
           <h4>${currentFeature.properties.description1}</h4>
-          <h4 class="italic">${currentFeature.properties.description2}</h4>`
+          <h4 class="italic">${currentFeature.properties.description2}</h4>
+          <i class="fas fa-link"></i> <a href=${currentFeature.properties.url} target="_blank"> ${currentFeature.properties.url} </a>
+          `
       )
       .addTo(map);
   }
@@ -162,9 +165,7 @@ async function getGeoJsonStores() {
 document.getElementById("localize").addEventListener("click", () => {
   navigator.geolocation.getCurrentPosition((position) => {
     map.flyTo({
-      center: [
-        position.coords.longitude,
-        position.coords.latitude], 
+      center: [position.coords.longitude, position.coords.latitude],
       zoom: 15,
     });
   });
