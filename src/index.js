@@ -163,7 +163,7 @@ async function getGeoJsonStores() {
       .setHTML(
         `<h3>${currentFeature.properties.name}</h3>
           <h4>${currentFeature.properties.description1 && currentFeature.properties.description1}</h4>
-          <h4 class="italic">${currentFeature.description2 && currentFeature.properties.description2}</h4>
+          <h4 class="italic">${currentFeature.properties.description2 && currentFeature.properties.description2}</h4>
           `
       )
       .addTo(map);
