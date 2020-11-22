@@ -127,7 +127,7 @@ async function getGeoJsonStores() {
         details2.classList.add("italic");
       }
 
-      if (proop.url) {
+      if (prop.url) {
         const details3 = listing.appendChild(document.createElement("div"));
         details3.innerHTML = `<i class="fas fa-link"></i> <a href=${prop.url} target="_blank"> ${prop.url}</a>`
       }
