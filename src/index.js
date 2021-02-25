@@ -1,4 +1,4 @@
-require("regenerator-runtime/runtime");
+import "regenerator-runtime/runtime.js";
 import Airtable from "airtable";
 
 if (!("remove" in Element.prototype)) {
@@ -24,15 +24,14 @@ const map = new mapboxgl.Map({
   scrollZoom: true,
 });
 
-async function getStoreListFromAirtable() {
-  const records = await airtableDatabase("StoreLocator")
-    .select({
-      view: "Grid view",
-    })
-    .firstPage();
 
-  return records.map((store) => {
-    return {
+async function* getStoreListFromAirtable() {
+  const records = await airtableDatabase("StoreLocator").select({
+    view: "Grid view"
+  }).all();
+
+  for (const store of records) {
+    yield {
       type: "Feature",
       geometry: {
         type: "Point",
@@ -45,15 +44,20 @@ async function getStoreListFromAirtable() {
         url: store.fields.Url,
       },
     };
-  });
+  }
 }
 
 async function getGeoJsonStores() {
-  const features = await getStoreListFromAirtable();
+  const features = getStoreListFromAirtable();
+
+  const data = [];
+  for await (const feature of features) {
+    data.push(feature);
+  }
 
   return {
     type: "FeatureCollection",
-    features: [...features],
+    features: data,
   };
 }
 
